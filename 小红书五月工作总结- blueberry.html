@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小红书 5 月运营交互看板</title>
+  <style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f8fc;--paper:#fff;--panel:#fff;--panel2:#f0f5fb;--line:#e3ebf4;--line2:#eef3f9;--hair:#dbe5f0;
+  --txt:#15243d;--txt2:#3a4d6b;--mut:#76839a;--mut2:#a7b5c9;
+  --accent:#4a6fa5;--accent-d:#37557f;--accent-l:#6f93c4;--cyan:#2f9bb0;--gold:#e0a521;--red:#d2604f;--pos:#2e9b6e;
+  --shadow:0 1px 2px rgba(21,36,61,.04),0 14px 36px rgba(21,36,61,.06);
+  --shadow-sm:0 1px 2px rgba(21,36,61,.04),0 6px 18px rgba(21,36,61,.05);
+}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;padding:34px 28px 64px;font-size:14px;line-height:1.5}
+body:before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-2;background:radial-gradient(1100px 600px at 88% -8%,rgba(74,111,165,.10),transparent 60%),radial-gradient(900px 520px at 6% 4%,rgba(212,228,247,.5),transparent 55%),linear-gradient(180deg,#f7fafe,#f3f7fc)}
+body:after{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.4;background-image:linear-gradient(rgba(74,111,165,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(74,111,165,.04) 1px,transparent 1px);background-size:46px 46px;mask:linear-gradient(180deg,#000,transparent 70%)}
+.wrap{max-width:1380px;margin:0 auto}.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:18px;position:relative}.head:after{content:'';position:absolute;left:0;bottom:-1px;width:140px;height:3px;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:3px}
+.head h1{font-size:36px;font-weight:750;line-height:1.08;letter-spacing:0}.head h1 b{font-weight:800;background:linear-gradient(120deg,var(--accent),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.sub{color:var(--mut);font-size:13px;margin-top:11px;line-height:1.7}.tagline{font-size:11.5px;color:var(--mut);text-align:right;line-height:1.9}
+.view-switch{display:flex;gap:5px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line2);border-radius:13px;padding:5px;margin:18px 0 24px;position:sticky;top:0;z-index:5;box-shadow:var(--shadow-sm)}
+.view-switch button,.filter button{appearance:none;border:0;background:transparent;color:var(--mut);font-weight:700;font-size:13px;padding:9px 18px;border-radius:9px;cursor:pointer;transition:.18s}.view-switch button:hover,.filter button:hover{color:var(--txt2)}.view-switch button.active{background:linear-gradient(135deg,var(--accent),var(--accent-l));color:#fff;box-shadow:0 8px 20px rgba(74,111,165,.28)}.filter button.active{background:var(--accent);color:#fff;box-shadow:0 6px 14px rgba(74,111,165,.24)}
+.section-block[hidden]{display:none!important}.section-title{display:flex;justify-content:space-between;align-items:end;gap:18px;margin:16px 0 14px}.section-title h2{font-size:25px;font-weight:800}.section-title p{color:var(--mut);font-size:13px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:22px;margin-bottom:16px}.card h3{font-size:17px;margin:0 0 14px}.card p{color:var(--mut);line-height:1.75}.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.card-head h3{display:flex;align-items:center;gap:8px;margin:0}.ic{width:4px;height:18px;background:var(--accent);border-radius:2px;display:inline-block}.hint{color:var(--mut);font-size:13px;line-height:1.65;margin-bottom:13px}
+.kpis,.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:14px}.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow-sm)}.kpi small{display:block;color:var(--mut);font-size:12px}.kpi b{display:block;font-size:30px;line-height:1.2;margin:9px 0 6px;letter-spacing:-.5px}.kpi span{color:var(--mut);font-size:12px}.metric small{color:var(--mut);display:block}.metric strong{display:block;font-size:30px;margin:12px 0 4px}
+.highlight-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.highlight-card{border-left:4px solid var(--accent)}.bar-row{display:grid;grid-template-columns:86px 1fr 76px;gap:12px;align-items:center;margin:13px 0;font-size:13px}.bar-track{height:10px;background:var(--panel2);border-radius:3px;overflow:hidden}.bar-track i{display:block;height:100%;border-radius:3px}.rank-row{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;border-bottom:1px solid var(--line2);padding:11px 0}.rank-row:last-child{border-bottom:0}.rank-row b{width:28px;height:28px;display:grid;place-items:center;border-radius:7px;background:var(--accent);color:white;font-size:12px}.rank-row strong,.rank-row small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rank-row small{color:var(--mut);margin-top:3px}.rank-row em{font-style:normal;font-weight:800}
+ul{margin:0;padding-left:20px;color:var(--mut);line-height:1.85}.axis text{fill:var(--mut);font-size:12px}svg{width:100%;height:auto;overflow:visible}.image-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:14px}.image-grid.influencer{grid-template-columns:repeat(4,minmax(0,1fr))}.image-card{margin:0;border:1px solid var(--line);background:var(--panel);border-radius:12px;overflow:hidden}.image-card img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:3/4}.jade-card{display:grid;grid-template-columns:240px 1fr;gap:18px;align-items:center}.jade-card img{width:100%;border-radius:12px;border:1px solid var(--line)}
+.tag{display:inline-block;padding:6px 9px;border-radius:8px;background:#eaf2fc;color:var(--accent);font-size:12px;font-weight:800}.priority{display:inline-block;border-radius:7px;padding:5px 8px;color:white;font-weight:800;font-size:12px}.p0{background:var(--accent)}.p1{background:var(--gold)}.p2{background:var(--mut)}
+.product-line{display:grid;grid-template-columns:minmax(380px,440px) minmax(0,1fr);gap:22px;padding:22px 0;border-bottom:1px solid var(--line)}.product-line:last-child{border-bottom:0}.product-line>div{min-width:0}.product-media{display:grid;grid-template-columns:1fr 1fr;gap:10px}.product-media img{width:100%;height:280px;object-fit:contain;border-radius:10px;border:1px solid var(--line);background:white;padding:6px}.product-line p{overflow-wrap:anywhere}
+.filter{display:flex;gap:4px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:5px;margin:12px 0}.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.toolbar{display:grid;grid-template-columns:minmax(220px,360px) 1fr;gap:12px;align-items:start;margin:12px 0}.search{width:100%;height:42px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 14px;color:var(--txt);font:inherit;outline:none}.search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(74,111,165,.12)}
+.table-card{overflow:auto}.data-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;min-width:980px;font-feature-settings:'tnum'}.data-table th,.data-table td{border-bottom:1px solid var(--line2);padding:12px 10px;text-align:right}.data-table th:first-child,.data-table td:first-child,.data-table th:nth-child(2),.data-table td:nth-child(2){text-align:left}.data-table thead th{background:var(--panel2);color:var(--mut);font-weight:700;font-size:11px;letter-spacing:.5px;position:sticky;top:0}.data-table th.sort{cursor:pointer;user-select:none}.data-table th.sort.active{color:var(--accent-d)}.data-table td b{color:var(--txt);font-size:14px}.badge{display:inline-flex;align-items:center;border-radius:999px;background:#eaf2fc;color:var(--accent-d);font-size:11px;font-weight:800;padding:4px 8px;white-space:nowrap}.rk{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--panel2);color:var(--mut);font-weight:800}.rk.g{background:var(--accent);color:white}.title-cell{max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.table-foot{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:var(--mut);font-size:12px}
+.chart-bars{display:grid;gap:10px}.chart-item{display:grid;grid-template-columns:110px 1fr 76px;gap:10px;align-items:center;font-size:12px}.chart-item i{display:block;height:12px;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:4px}.chart-item .track{background:var(--panel2);border-radius:4px;overflow:hidden}
+table{width:100%;border-collapse:collapse;min-width:760px}th,td{border-bottom:1px solid var(--line);padding:14px 12px;text-align:left;font-size:14px;vertical-align:top}th{color:var(--mut);font-weight:700}.table-scroll{overflow:auto}.foot{margin-top:28px;color:var(--mut);font-size:12px;text-align:center;line-height:1.8}
+@media(max-width:980px){body{padding:22px 14px 42px}.kpis,.grid4,.grid2,.grid3,.highlight-grid,.filter-row,.toolbar,.jade-card,.product-line{grid-template-columns:1fr}.image-grid,.image-grid.influencer{grid-template-columns:repeat(2,minmax(0,1fr))}.product-media img{height:220px}.head h1{font-size:27px}.tagline{text-align:left}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div>
+      <h1><b>小红书</b> 5 月运营交互看板</h1>
+      <div class="sub">月报复盘、账号运营明细、达人种草明细三板块整合 · 可筛选 · 可排序 · 可上传 GitHub Pages</div>
+    </div>
+    <div class="tagline">数据周期：2026.05<br>数据来源：账号运营五月数据 / 达人种草五月数据</div>
+  </header>
+  <nav class="view-switch">
+    <button class="active" data-view="report">月报总览</button>
+    <button data-view="accountData">账号运营数据</button>
+    <button data-view="influencerData">达人种草数据</button>
+  </nav>
+  
+  <section class="section-block" id="report">
+    <div class="section-title"><h2>月报总览</h2><p>五月复盘 · 六月规划 · 爆文样本</p></div>
+    <div class="card">
+      <h2>摘要</h2>
+      <div class="highlight-grid">
+        <div class="card highlight-card"><h3>账号运营亮点</h3><p>账号侧共形成 9 篇爆文，爆文率 15.3%；萌宠拟人、明星同款与宠粉互动验证了高互动潜力。</p></div>
+        <div class="card highlight-card"><h3>达人种草亮点</h3><p>达人侧贡献 223.0万 曝光与 8.7万 互动；Jade 萌宠内容同步抖音后获得 2.4 万赞，验证跨平台扩散价值。</p></div>
+      </div>
+      <p><b>最大问题：</b>爆文产出仍偏依赖单点创意和个别达人，尚未沉淀可复用的内容模型；长尾达人数据波动大，发布后监测、复盘与止损机制不够完善。</p>
+      <p><b>六月重点：</b>围绕猫狗养乐杯、磐石钛杯、小蛮腰钛杯搭建分账号与分达人矩阵，建立爆文方法论和达人分层复投机制。</p>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><small>全域曝光</small><b>288.4万</b><span>账号 + 达人投放</span></div>
+      <div class="kpi"><small>全域互动</small><b>11.1万</b><span>合计互动规模</span></div>
+      <div class="kpi"><small>五月净增粉</small><b>2,017</b><span>当前粉丝 1.8万</span></div>
+      <div class="kpi"><small>达人投放成本</small><b>¥38,545.50</b><span>整体 CPE ¥0.44</span></div>
+    </div>
+    <div class="grid4" style="margin-top:14px">
+      <div class="kpi"><small>账号总曝光</small><b>65.5万</b><span>59 篇笔记</span></div>
+      <div class="kpi"><small>账号总互动</small><b>2.4万</b><span>互动率 3.6%</span></div>
+      <div class="kpi"><small>账号爆文</small><b>9 篇</b><span>爆文率 15.3%</span></div>
+      <div class="kpi"><small>达人爆文</small><b>18 篇</b><span>爆文率 9.9%</span></div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card"><h3>五月账号曝光趋势</h3>
+    <svg viewBox="0 0 760 296" role="img" aria-label="账号曝光趋势">
+      <path d="M0.0,182.8 L25.3,238.0 L50.7,216.4 L76.0,237.6 L101.3,238.4 L126.7,237.6 L152.0,238.6 L177.3,238.2 L202.7,237.7 L228.0,237.4 L253.3,232.9 L278.7,68.4 L304.0,206.7 L329.3,210.0 L354.7,171.0 L380.0,118.8 L405.3,193.2 L430.7,222.5 L456.0,122.2 L481.3,214.6 L506.7,15.0 L532.0,209.6 L557.3,223.4 L582.7,223.8 L608.0,235.1 L633.3,226.5 L658.7,237.6 L684.0,233.0 L709.3,236.3 L734.7,234.0 L760.0,240.5" fill="none" stroke="#3a64a0" stroke-width="3" />
+      <g fill="#3a64a0"><circle cx="0.0" cy="182.8" r="3" />
+<circle cx="25.3" cy="238.0" r="3" />
+<circle cx="50.7" cy="216.4" r="3" />
+<circle cx="76.0" cy="237.6" r="3" />
+<circle cx="101.3" cy="238.4" r="3" />
+<circle cx="126.7" cy="237.6" r="3" />
+<circle cx="152.0" cy="238.6" r="3" />
+<circle cx="177.3" cy="238.2" r="3" />
+<circle cx="202.7" cy="237.7" r="3" />
+<circle cx="228.0" cy="237.4" r="3" />
+<circle cx="253.3" cy="232.9" r="3" />
+<circle cx="278.7" cy="68.4" r="3" />
+<circle cx="304.0" cy="206.7" r="3" />
+<circle cx="329.3" cy="210.0" r="3" />
+<circle cx="354.7" cy="171.0" r="3" />
+<circle cx="380.0" cy="118.8" r="3" />
+<circle cx="405.3" cy="193.2" r="3" />
+<circle cx="430.7" cy="222.5" r="3" />
+<circle cx="456.0" cy="122.2" r="3" />
+<circle cx="481.3" cy="214.6" r="3" />
+<circle cx="506.7" cy="15.0" r="3" />
+<circle cx="532.0" cy="209.6" r="3" />
+<circle cx="557.3" cy="223.4" r="3" />
+<circle cx="582.7" cy="223.8" r="3" />
+<circle cx="608.0" cy="235.1" r="3" />
+<circle cx="633.3" cy="226.5" r="3" />
+<circle cx="658.7" cy="237.6" r="3" />
+<circle cx="684.0" cy="233.0" r="3" />
+<circle cx="709.3" cy="236.3" r="3" />
+<circle cx="734.7" cy="234.0" r="3" />
+<circle cx="760.0" cy="240.5" r="3" /></g>
+      <g class="axis"><text x="0.0" y="280" text-anchor="middle">5/1</text>
+<text x="76.0" y="280" text-anchor="middle">5/4</text>
+<text x="152.0" y="280" text-anchor="middle">5/7</text>
+<text x="228.0" y="280" text-anchor="middle">5/10</text>
+<text x="304.0" y="280" text-anchor="middle">5/13</text>
+<text x="380.0" y="280" text-anchor="middle">5/16</text>
+<text x="456.0" y="280" text-anchor="middle">5/19</text>
+<text x="532.0" y="280" text-anchor="middle">5/22</text>
+<text x="608.0" y="280" text-anchor="middle">5/25</text>
+<text x="684.0" y="280" text-anchor="middle">5/28</text>
+<text x="760.0" y="280" text-anchor="middle">5/31</text></g>
+    </svg>
+    </div>
+      <div class="card"><h3>高表现内容</h3>
+            <div class="rank-row">
+              <b>1</b>
+              <span><strong>“🪅把今天过得像一件礼物  🐱🐶随身杯”</strong><small>养乐杯</small></span>
+              <em>5,409</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>2</b>
+              <span><strong>🍓✨哈宠粉｜选一选❕🐱🐶天才修狗杯派送中……</strong><small>养乐杯</small></span>
+              <em>3,608</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>3</b>
+              <span><strong>天才爱豆 𝐗 天才修狗❗  一起哈水 &#x27;.ㅅ&#x27;</strong><small>养乐杯</small></span>
+              <em>2,865</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>4</b>
+              <span><strong>车里有只豆豆眼小狗站的梆直😶💭</strong><small>养乐杯</small></span>
+              <em>1,839</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>5</b>
+              <span><strong>哈宠粉🍏🍓🔆水果系列便携杯你带谁！？</strong><small>冰透杯</small></span>
+              <em>1,575</em>
+            </div>
+            </div>
+    </div>
+    <div class="grid3">
+      <div class="card"><h3>达人产品互动表现</h3>
+            <div class="bar-row">
+              <span>猫狗养乐杯</span>
+              <div class="bar-track"><i style="width:100.00%;background:#2f9bb0"></i></div>
+              <strong>7.5万</strong>
+            </div>
+            
+
+            <div class="bar-row">
+              <span>摘星杯</span>
+              <div class="bar-track"><i style="width:4.11%;background:#2f9bb0"></i></div>
+              <strong>3,096</strong>
+            </div>
+            
+
+            <div class="bar-row">
+              <span>海洋泡泡</span>
+              <div class="bar-track"><i style="width:4.06%;background:#2f9bb0"></i></div>
+              <strong>3,058</strong>
+            </div>
+            
+
+            <div class="bar-row">
+              <span>喵喵瓶</span>
+              <div class="bar-track"><i style="width:2.00%;background:#2f9bb0"></i></div>
+              <strong>1,263</strong>
+            </div>
+            
+
+            <div class="bar-row">
+              <span>冰透杯</span>
+              <div class="bar-track"><i style="width:4.46%;background:#2f9bb0"></i></div>
+              <strong>3,361</strong>
+            </div>
+            
+
+            <div class="bar-row">
+              <span>星愿杯</span>
+              <div class="bar-track"><i style="width:2.00%;background:#2f9bb0"></i></div>
+              <strong>998</strong>
+            </div>
+            </div>
+      <div class="card"><h3>亮点达人</h3>
+            <div class="rank-row">
+              <b>1</b>
+              <span><strong>Jade</strong><small>猫狗养乐杯</small></span>
+              <em>6,370</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>2</b>
+              <span><strong>小李飞鸽</strong><small>猫狗养乐杯</small></span>
+              <em>5,595</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>3</b>
+              <span><strong>Russell爱打呼</strong><small>猫狗养乐杯</small></span>
+              <em>2,952</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>4</b>
+              <span><strong>卡卡米</strong><small>猫狗养乐杯</small></span>
+              <em>2,950</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>5</b>
+              <span><strong>春日禾</strong><small>猫狗养乐杯</small></span>
+              <em>2,849</em>
+            </div>
+            </div>
+      <div class="card"><h3>低效达人</h3>
+            <div class="rank-row">
+              <b>1</b>
+              <span><strong>FashionDash</strong><small>猫狗养乐杯</small></span>
+              <em>¥9.38</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>2</b>
+              <span><strong>FashionNerd</strong><small>猫狗养乐杯</small></span>
+              <em>¥8.67</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>3</b>
+              <span><strong>Starvault明星同款</strong><small>猫狗养乐杯</small></span>
+              <em>¥6.18</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>4</b>
+              <span><strong>虾饺不好惹【明星同款】</strong><small>猫狗养乐杯</small></span>
+              <em>¥5.72</em>
+            </div>
+            
+
+            <div class="rank-row">
+              <b>5</b>
+              <span><strong>明星同款潮搭</strong><small>猫狗养乐杯</small></span>
+              <em>¥5.64</em>
+            </div>
+            </div>
+    </div>
+    <div class="card"><h3>5 月账号爆文笔记展示</h3><p>账号侧爆文集中体现萌宠拟人、包挂场景、明星同款和宠粉互动，需要进一步拆解为可复制内容模板。</p><div class="image-grid">
+        <figure class="image-card ">
+          <img src="assets/account-hits/account-hit-1.png" alt="账号爆文1" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/account-hits/account-hit-2.png" alt="账号爆文2" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/account-hits/account-hit-3.png" alt="账号爆文3" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/account-hits/account-hit-4.png" alt="账号爆文4" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/account-hits/account-hit-5.png" alt="账号爆文5" loading="lazy" />
+        </figure>
+        </div></div>
+    <div class="card"><h3>5 月达人爆文笔记展示</h3><p>达人侧爆文证明萌宠、开箱、生活方式和穿搭场景具备扩散效率，后续需沉淀达人选型与内容脚本标准。</p><div class="image-grid influencer">
+        <figure class="image-card ">
+          <img src="assets/influencer-hits/influencer-hit-1.png" alt="达人爆文1" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/influencer-hits/influencer-hit-2.png" alt="达人爆文2" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/influencer-hits/influencer-hit-3.png" alt="达人爆文3" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/influencer-hits/influencer-hit-6.png" alt="达人爆文4" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/influencer-hits/influencer-hit-5.png" alt="达人爆文5" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/influencer-hits/influencer-hit-7.png" alt="达人爆文6" loading="lazy" />
+        </figure>
+        
+
+        <figure class="image-card ">
+          <img src="assets/influencer-hits/influencer-hit-4.png" alt="达人爆文7" loading="lazy" />
+        </figure>
+        </div></div>
+    <div class="card jade-card"><img src="assets/influencer-hits/jade-douyin.jpg" alt="Jade 抖音内容展示" loading="lazy"><div><span class="tag">跨平台价值</span><h3>Jade 萌宠内容同步至抖音</h3><p>Jade 的猫咪视角内容在小红书已形成亮点互动，同步至抖音后获得 2.4 万赞、453 条评论、1236 次收藏和 6334 次分享。</p><p>这说明“萌宠真实互动 + 产品拟人化”不只适合小红书种草，也具备短视频平台的二次传播潜力。</p></div></div>
+    <div class="grid2"><div class="card"><h3>账号亮点</h3><ul><li>爆文率达到 15.3%，共形成 9 篇爆文。</li><li>单篇最高互动来自《“🪅把今天过得像一件礼物  🐱🐶随身杯”》，贡献 5,409 次互动。</li><li>五月净增粉 2,017，内容涨粉贡献 1,495。</li></ul></div><div class="card"><h3>账号风险</h3><ul><li>账号互动率为 3.6%，仍有提升空间。</li><li>已出现多种爆文内容形态，但未形成从选题、封面、标题到互动承接的可复制爆文模型方法论。</li><li>59 篇均为原创，达人优质素材尚未系统沉淀为可规模化复用的二创资产。</li></ul></div></div>
+    <div class="grid2"><div class="card"><h3>投放亮点</h3><ul><li>达人种草总曝光达到 223.0万，是账号自营曝光的 3.4 倍。</li><li>亮点达人 Jade 单篇贡献 6,370 互动。</li><li>猫狗养乐杯贡献 7.5万 互动，并产出 18 篇爆文。</li></ul></div><div class="card"><h3>投放风险</h3><ul><li>除头部亮点达人外，长尾达人曝光与互动差异较大，选人判断仍需加强。</li><li>达人发布后的 24/48/72 小时数据追踪与内容纠偏机制不完善，低效内容止损偏慢。</li><li>优质达人内容尚未充分转化为跨平台分发、品牌账号二创和长期搜索资产。</li></ul></div></div>
+    <div class="card"><h3>三条产品线分账号 + 分达人矩阵</h3>
+            <article class="product-line">
+              <div class="product-media">
+                <img src="assets/june-plan/cat-dog-cup.jpg" alt="猫狗养乐杯" loading="lazy" />
+                <img src="assets/june-plan/haers-fashion-account.png" alt="哈尔斯潮流时尚线账号" loading="lazy" />
+              </div>
+              <div>
+                <span class="tag">哈尔斯潮流时尚线</span>
+                <h3>猫狗养乐杯</h3>
+                <p><b>产品定位：</b>可爱随身、萌宠陪伴、潮流包挂</p>
+                <p><b>用户洞察：</b>年轻女性、学生与萌宠审美人群</p>
+                <p><b>分账号策略：</b>哈尔斯主账号负责品牌爆款内容；围绕通勤、包挂、毕业季与夏日随行持续造梗。</p>
+                <p><b>分达人矩阵：</b>萌宠、潮流穿搭、学生生活、礼物分享达人分层种草；复投 Jade 等验证达人并推进跨平台扩散。</p>
+                <p><b>市场节点：</b>儿童节余温、毕业季、暑期出游</p>
+                <p><b>目标：</b>持续做大单品声量，沉淀萌宠拟人爆文模板</p>
+              </div>
+            </article>
+            
+
+            <article class="product-line">
+              <div class="product-media">
+                <img src="assets/june-plan/panshi-titanium.jpg" alt="磐石钛杯" loading="lazy" />
+                <img src="assets/june-plan/haers-gift-account.png" alt="哈尔斯经典礼盒线账号" loading="lazy" />
+              </div>
+              <div>
+                <span class="tag">哈尔斯经典礼盒线</span>
+                <h3>磐石钛杯</h3>
+                <p><b>产品定位：</b>高端商务、东方质感、体面赠礼</p>
+                <p><b>用户洞察：</b>商务男性、品质人群与节日送礼决策者</p>
+                <p><b>分账号策略：</b>哈尔斯礼物指南账号承接礼赠内容；用送父亲、送客户、端午礼赠三类场景强化送礼理由。</p>
+                <p><b>分达人矩阵：</b>商务职场、男性品质生活、茶文化与礼物指南达人种草，突出钛材质与礼盒仪式感。</p>
+                <p><b>市场节点：</b>端午节、父亲节、商务礼赠</p>
+                <p><b>目标：</b>建立经典礼盒线搜索资产与节日转化心智</p>
+              </div>
+            </article>
+            
+
+            <article class="product-line">
+              <div class="product-media">
+                <img src="assets/june-plan/nonoo-product.jpg" alt="小蛮腰钛杯" loading="lazy" />
+                <img src="assets/june-plan/nonoo-account.png" alt="NONOO 新轻奢线账号" loading="lazy" />
+              </div>
+              <div>
+                <span class="tag">NONOO 新轻奢线</span>
+                <h3>小蛮腰钛杯</h3>
+                <p><b>产品定位：</b>女性轻奢、设计感、精致悦己</p>
+                <p><b>用户洞察：</b>都市女性、轻奢审美与精致生活人群</p>
+                <p><b>分账号策略：</b>NONOO 独立账号塑造新轻奢视觉；围绕办公室、轻运动、精致出行建立女性生活方式内容。</p>
+                <p><b>分达人矩阵：</b>轻奢穿搭、都市白领、审美家居与女性生活方式达人种草，强化设计与材质价值。</p>
+                <p><b>市场节点：</b>618、夏日通勤、女性悦己</p>
+                <p><b>目标：</b>完成独立账号冷启动并建立小蛮腰钛杯人群认知</p>
+              </div>
+            </article>
+            </div>
+    <div class="kpis"><div class="kpi"><small>账号总曝光</small><b>79.0万</b><span>五月基线：65.5万</span></div><div class="kpi"><small>达人总曝光</small><b>257.0万</b><span>五月基线：223.0万</span></div><div class="kpi"><small>全域总互动</small><b>12.8万</b><span>五月基线：11.1万</span></div><div class="kpi"><small>达人 CPE</small><b>¥0.4</b><span>五月基线：¥0.44</span></div></div>
+    <div class="card"><h3>优先级行动计划</h3><div class="table-scroll"><table><thead><tr><th>优先级</th><th>策略动作</th><th>执行说明</th><th>负责人</th><th>验收指标</th></tr></thead><tbody>
+            <tr>
+              <td><span class="priority p0">P0</span></td>
+              <td><strong>建立爆文方法论</strong></td>
+              <td>拆解萌宠拟人、明星同款、宠粉互动等爆文，形成选题、封面、标题与评论承接模板。</td>
+              <td>账号运营</td>
+              <td>爆文率 ≥ 18%</td>
+            </tr>
+            
+
+            <tr>
+              <td><span class="priority p0">P0</span></td>
+              <td><strong>建立达人复投白名单</strong></td>
+              <td>按互动、CPE、涨粉三维筛选 Top 达人，预算优先向已验证人群倾斜。</td>
+              <td>达人投放</td>
+              <td>CPE ≤ ¥0.40</td>
+            </tr>
+            
+
+            <tr>
+              <td><span class="priority p0">P0</span></td>
+              <td><strong>设置低效止损线</strong></td>
+              <td>上线 72 小时后按曝光和互动双阈值判断，低效达人暂停追加资源。</td>
+              <td>达人投放</td>
+              <td>低效占比 &lt; 15%</td>
+            </tr>
+            
+
+            <tr>
+              <td><span class="priority p1">P1</span></td>
+              <td><strong>强化评论区转粉链路</strong></td>
+              <td>高热笔记统一配置评论区引导、关键词互动与社群承接。</td>
+              <td>账号运营</td>
+              <td>涨粉转化 ≥ 1%</td>
+            </tr>
+            
+
+            <tr>
+              <td><span class="priority p1">P1</span></td>
+              <td><strong>提升新品内容占比</strong></td>
+              <td>为冰透杯、星愿杯建立场景化内容矩阵，降低单一产品依赖。</td>
+              <td>内容策划</td>
+              <td>新品曝光占比 ≥ 25%</td>
+            </tr>
+            
+
+            <tr>
+              <td><span class="priority p2">P2</span></td>
+              <td><strong>启动二创素材库</strong></td>
+              <td>沉淀达人高表现素材，形成可授权、可剪辑、可复投的二创资产。</td>
+              <td>内容策划</td>
+              <td>二创笔记 ≥ 8 篇</td>
+            </tr>
+            </tbody></table></div></div>
+  </section>
+
+  
+  <section class="section-block" id="accountData" hidden>
+    <div class="section-title"><h2>账号运营数据</h2><p>来源：【账号运营】5月数据总结.xlsx · 逐篇笔记可筛选排序</p></div>
+    <div class="kpis" id="accountDynamicKpis"></div>
+    <div class="grid2">
+      <div class="card"><div class="card-head"><h3><span class="ic"></span>产品曝光结构</h3></div><div class="chart-bars" id="accountProductChart"></div></div>
+      <div class="card"><div class="card-head"><h3><span class="ic"></span>内容体裁结构</h3></div><div class="chart-bars" id="accountFormatChart"></div></div>
+    </div>
+    <div class="card table-card">
+      <div class="card-head"><h3><span class="ic"></span>账号笔记明细</h3><span class="tag" id="accountCount"></span></div>
+      <div class="toolbar">
+        <input class="search" id="accountSearch" placeholder="搜索标题 / 产品 / 体裁">
+        <div>
+          <div class="filter" id="accountProductFilter"><button class="active" data-filter-group="accountProduct" data-value="全部">全部</button><button class="" data-filter-group="accountProduct" data-value="养乐杯">养乐杯</button><button class="" data-filter-group="accountProduct" data-value="冰透杯">冰透杯</button></div>
+          <div class="filter" id="accountFormatFilter"><button class="active" data-filter-group="accountFormat" data-value="全部">全部</button><button class="" data-filter-group="accountFormat" data-value="图文">图文</button><button class="" data-filter-group="accountFormat" data-value="视频">视频</button></div>
+        </div>
+      </div>
+      <table class="data-table" id="accountTable"></table>
+      <div class="table-foot"><span>点击表头可排序</span><span>默认按互动量降序</span></div>
+    </div>
+  </section>
+
+  <section class="section-block" id="influencerData" hidden>
+    <div class="section-title"><h2>达人种草数据</h2><p>来源：【达人种草】5月数据总结.xlsx · 投放明细可筛选排序</p></div>
+    <div class="kpis" id="influencerDynamicKpis"></div>
+    <div class="grid2">
+      <div class="card"><div class="card-head"><h3><span class="ic"></span>产品互动结构</h3></div><div class="chart-bars" id="influencerProductChart"></div></div>
+      <div class="card"><div class="card-head"><h3><span class="ic"></span>登记人投放结构</h3></div><div class="chart-bars" id="influencerOwnerChart"></div></div>
+    </div>
+    <div class="card table-card">
+      <div class="card-head"><h3><span class="ic"></span>达人投放明细</h3><span class="tag" id="influencerCount"></span></div>
+      <div class="toolbar">
+        <input class="search" id="influencerSearch" placeholder="搜索达人 / 产品 / 登记人">
+        <div>
+          <div class="filter" id="influencerProductFilter"><button class="active" data-filter-group="influencerProduct" data-value="全部">全部</button><button class="" data-filter-group="influencerProduct" data-value="冰透杯">冰透杯</button><button class="" data-filter-group="influencerProduct" data-value="喵喵瓶">喵喵瓶</button><button class="" data-filter-group="influencerProduct" data-value="摘星杯">摘星杯</button><button class="" data-filter-group="influencerProduct" data-value="星愿杯">星愿杯</button><button class="" data-filter-group="influencerProduct" data-value="海洋泡泡">海洋泡泡</button><button class="" data-filter-group="influencerProduct" data-value="猫狗养乐杯">猫狗养乐杯</button></div>
+          <div class="filter" id="influencerOwnerFilter"><button class="active" data-filter-group="influencerOwner" data-value="全部">全部</button><button class="" data-filter-group="influencerOwner" data-value="单莉媛">单莉媛</button><button class="" data-filter-group="influencerOwner" data-value="杨润叶">杨润叶</button><button class="" data-filter-group="influencerOwner" data-value="赵雨鑫">赵雨鑫</button></div>
+        </div>
+      </div>
+      <table class="data-table" id="influencerTable"></table>
+      <div class="table-foot"><span>点击表头可排序</span><span>已删除数据异常达人：觉好好碎</span></div>
+    </div>
+  </section>
+
+  <div class="foot">HAERS 哈尔斯 · 小红书 5 月运营交互看板 · 静态网页版本</div>
+</div>
+<script type="application/json" id="dashboard-data">{"account": {"summary": {"followers": 18135, "newFollowers": 2017, "community": 4601, "posts": 59, "hits": 9, "exposure": 654807, "views": 172860, "interaction": 23681, "interactionRate": 3.6, "followerConversion": 0.9, "hitRate": 15.3}, "notes": [{"title": "“🪅把今天过得像一件礼物  🐱🐶随身杯”", "product": "养乐杯", "format": "视频", "date": "5/12", "exposure": 83590, "views": 45757, "likes": 3859, "comments": 86, "saves": 1102, "followers": 362, "interaction": 5409, "level": "中爆文"}, {"title": "天才爱豆 𝐗 天才修狗❗  一起哈水 '.ㅅ'", "product": "养乐杯", "format": "图文", "date": "5/21", "exposure": 116235, "views": 20781, "likes": 2345, "comments": 257, "saves": 220, "followers": 43, "interaction": 2865, "level": "中爆文"}, {"title": "车里有只豆豆眼小狗站的梆直😶💭", "product": "养乐杯", "format": "视频", "date": "5/15", "exposure": 27372, "views": 22891, "likes": 1521, "comments": 7, "saves": 261, "followers": 50, "interaction": 1839, "level": "小爆文"}, {"title": "可恶😖她的水杯竟然可以当包挂🪅❗️", "product": "养乐杯", "format": "视频", "date": "5/22", "exposure": 15443, "views": 13578, "likes": 1257, "comments": 9, "saves": 159, "followers": 21, "interaction": 1446, "level": "小爆文"}, {"title": "🍓✨哈宠粉｜选一选❕🐱🐶天才修狗杯派送中……", "product": "养乐杯", "format": "图文", "date": "5/19", "exposure": 62342, "views": 8915, "likes": 1056, "comments": 1156, "saves": 806, "followers": 590, "interaction": 3608, "level": "中爆文"}, {"title": "✨萌神降临！在便利店被惊艳到了🫙🍓", "product": "养乐杯", "format": "图文", "date": "5/16", "exposure": 54829, "views": 5515, "likes": 877, "comments": 9, "saves": 112, "followers": 10, "interaction": 1008, "level": "中爆文"}, {"title": "幸福淡淡的 像软萌修狗ฅ^•ﻌ•^🎀ฅ", "product": "养乐杯", "format": "视频", "date": "5/26", "exposure": 7465, "views": 5404, "likes": 671, "comments": 5, "saves": 59, "followers": 12, "interaction": 747, "level": ""}, {"title": "Less is more🎗️功能夯爆的水果玻璃杯🍇", "product": "冰透杯", "format": "视频", "date": "5/3", "exposure": 15360, "views": 6944, "likes": 645, "comments": 8, "saves": 135, "followers": 18, "interaction": 806, "level": "小爆文"}, {"title": "plog*晚间幸福日常，永远爱小猫杯ʚ♡ɞ", "product": "养乐杯", "format": "视频", "date": "5/30", "exposure": 4105, "views": 3263, "likes": 463, "comments": 1, "saves": 20, "followers": 1, "interaction": 485, "level": ""}, {"title": "哈宠粉🍏🍓🔆水果系列便携杯你带谁！？", "product": "冰透杯", "format": "图文", "date": "5/1", "exposure": 33458, "views": 3962, "likes": 458, "comments": 474, "saves": 368, "followers": 275, "interaction": 1575, "level": "小爆文"}, {"title": "💭🧸修狗随身杯大杀四方🦖", "product": "养乐杯", "format": "视频", "date": "5/16", "exposure": 7458, "views": 4599, "likes": 446, "comments": 4, "saves": 53, "followers": 10, "interaction": 513, "level": ""}, {"title": "🧋💭上班路上修狗陪rua 心里美美嘟😚", "product": "养乐杯", "format": "视频", "date": "5/20", "exposure": 6422, "views": 3140, "likes": 286, "comments": 3, "saves": 38, "followers": 2, "interaction": 329, "level": ""}, {"title": "来看来看🥳顶天立地大女人都在养什么狗！？", "product": "养乐杯", "format": "视频", "date": "5/13", "exposure": 6653, "views": 2860, "likes": 267, "comments": 5, "saves": 47, "followers": 12, "interaction": 331, "level": ""}, {"title": "⊹🍥⸝⸝⸝ Unboxing｜🐈薄巧味小猫水杯!!", "product": "养乐杯", "format": "视频", "date": "5/28", "exposure": 3639, "views": 1659, "likes": 163, "comments": 5, "saves": 17, "followers": 4, "interaction": 189, "level": ""}, {"title": "晶莹剔透🍐柠檬果茶玻璃杯🧊✨", "product": "冰透杯", "format": "视频", "date": "5/10", "exposure": 4109, "views": 1179, "likes": 137, "comments": 6, "saves": 19, "followers": 6, "interaction": 168, "level": ""}, {"title": "🐱🐶：“群英荟萃。”    人：“猫狗开会😪。”", "product": "养乐杯", "format": "图文", "date": "5/17", "exposure": 16162, "views": 1109, "likes": 112, "comments": 11, "saves": 22, "followers": 3, "interaction": 148, "level": "小爆文"}, {"title": "出来遛狗 求偶遇", "product": "养乐杯", "format": "视频", "date": "5/13", "exposure": 5879, "views": 1408, "likes": 112, "comments": 9, "saves": 25, "followers": 15, "interaction": 161, "level": ""}, {"title": "🎀💬日常の惊喜盲盒礼物(*ˊᗜˋ*)", "product": "养乐杯", "format": "视频", "date": "5/12", "exposure": 4567, "views": 1298, "likes": 106, "comments": 5, "saves": 35, "followers": 9, "interaction": 155, "level": ""}, {"title": "💭论吵完架后…死党如何上门求和好", "product": "养乐杯", "format": "图文", "date": "5/14", "exposure": 11060, "views": 666, "likes": 105, "comments": 11, "saves": 20, "followers": 1, "interaction": 137, "level": "小爆文"}, {"title": "《天才修勾养成日記🐶💭》 🍓HAERS养乐杯", "product": "养乐杯", "format": "视频", "date": "5/21", "exposure": 7494, "views": 1877, "likes": 95, "comments": 9, "saves": 37, "followers": 29, "interaction": 170, "level": ""}, {"title": "🧃💭“车里私藏的快乐水搭子❕”", "product": "养乐杯", "format": "图文", "date": "5/17", "exposure": 7657, "views": 453, "likes": 93, "comments": 14, "saves": 13, "followers": 0, "interaction": 120, "level": ""}, {"title": "💭🍄收到会很开心的520礼物❕❗️", "product": "养乐杯", "format": "视频", "date": "5/15", "exposure": 6109, "views": 2591, "likes": 87, "comments": 9, "saves": 18, "followers": 6, "interaction": 120, "level": ""}, {"title": "unboxing🎀拆一个萌萌小狗杯～", "product": "养乐杯", "format": "视频", "date": "5/31", "exposure": 2399, "views": 721, "likes": 74, "comments": 2, "saves": 8, "followers": 1, "interaction": 85, "level": ""}, {"title": "😱小茂密❕谁家的小茂密……", "product": "养乐杯", "format": "图文", "date": "5/13", "exposure": 8079, "views": 490, "likes": 62, "comments": 8, "saves": 8, "followers": 0, "interaction": 78, "level": ""}, {"title": "小狗就是力量！分分钟爱上喝水🍓🛁 ◌ ˚｡⋆", "product": "养乐杯", "format": "图文", "date": "5/23", "exposure": 5657, "views": 388, "likes": 57, "comments": 7, "saves": 17, "followers": 1, "interaction": 82, "level": ""}, {"title": "🐰和室友集邮✨在生活中被可爱包围❗", "product": "养乐杯", "format": "图文", "date": "5/16", "exposure": 5584, "views": 447, "likes": 57, "comments": 8, "saves": 6, "followers": 4, "interaction": 75, "level": ""}, {"title": "HAERS新品预告 | “爱是猫猫狗狗和天气。”☁️", "product": "养乐杯", "format": "视频", "date": "5/11", "exposure": 6525, "views": 1231, "likes": 52, "comments": 21, "saves": 12, "followers": 2, "interaction": 87, "level": ""}, {"title": "😎✨比可爱没输过❕随身杯势必萌到每个路人", "product": "养乐杯", "format": "视频", "date": "5/25", "exposure": 2660, "views": 881, "likes": 50, "comments": 4, "saves": 7, "followers": 2, "interaction": 63, "level": ""}, {"title": "萌萌之中 早已注定٩(˃̶͈̀௰˂̶͈́)و✨", "product": "养乐杯", "format": "视频", "date": "5/23", "exposure": 3010, "views": 884, "likes": 42, "comments": 6, "saves": 5, "followers": 0, "interaction": 53, "level": ""}, {"title": "✨💭520给可爱女人们一人一只˚໋✧.⋆ᡣ𐭩˚", "product": "养乐杯", "format": "图文", "date": "5/18", "exposure": 4907, "views": 391, "likes": 41, "comments": 6, "saves": 9, "followers": 1, "interaction": 57, "level": ""}, {"title": "🐻✨萌遍见到它的每个路人🍞", "product": "养乐杯", "format": "视频", "date": "5/17", "exposure": 4048, "views": 566, "likes": 40, "comments": 6, "saves": 5, "followers": 1, "interaction": 52, "level": ""}, {"title": "280mL 𝐕𝐒 380mL💧摸一嗷喵•̀ω•́ฅ", "product": "养乐杯", "format": "图文", "date": "5/24", "exposure": 5993, "views": 482, "likes": 38, "comments": 6, "saves": 8, "followers": 0, "interaction": 52, "level": ""}, {"title": "◛⁺⑅·̩͙unboxing淡淡的ins感小狗水杯🧊", "product": "养乐杯", "format": "视频", "date": "5/29", "exposure": 2128, "views": 754, "likes": 36, "comments": 1, "saves": 5, "followers": 1, "interaction": 43, "level": ""}, {"title": "😮天啦什么运气!? 捡到狗啦啦啦🐕", "product": "养乐杯", "format": "图文", "date": "5/12", "exposure": 6847, "views": 517, "likes": 30, "comments": 19, "saves": 4, "followers": 0, "interaction": 53, "level": ""}, {"title": "早八通勤党！会隐身的提手杯太绝了😭", "product": "冰透杯", "format": "图文", "date": "5/4", "exposure": 3959, "views": 232, "likes": 30, "comments": 7, "saves": 7, "followers": 1, "interaction": 45, "level": ""}, {"title": "阿呜₊⁺♡‌₊⁺一只可爱的软萌修狗杯", "product": "养乐杯", "format": "图文", "date": "5/28", "exposure": 2827, "views": 158, "likes": 27, "comments": 3, "saves": 5, "followers": 2, "interaction": 37, "level": ""}, {"title": "🎧随身携带随时可爱🍓修狗养乐杯", "product": "养乐杯", "format": "图文", "date": "5/24", "exposure": 3013, "views": 155, "likes": 24, "comments": 1, "saves": 4, "followers": 0, "interaction": 29, "level": ""}, {"title": "520·关于爱与陪伴🫶🏼✨玩偶随身杯🫧", "product": "养乐杯", "format": "图文", "date": "5/20", "exposure": 4907, "views": 204, "likes": 24, "comments": 8, "saves": 3, "followers": 0, "interaction": 35, "level": ""}, {"title": "猫猫头捏捏❗❕nonono是随身杯啦😝", "product": "养乐杯", "format": "图文", "date": "5/15", "exposure": 6318, "views": 385, "likes": 20, "comments": 6, "saves": 6, "followers": 0, "interaction": 32, "level": ""}, {"title": "好萌的便携小狗杯！天天揣书包带去上学🎒", "product": "养乐杯", "format": "视频", "date": "5/27", "exposure": 1752, "views": 448, "likes": 18, "comments": 2, "saves": 5, "followers": 0, "interaction": 25, "level": ""}, {"title": "天才修狗养乐杯❔拿下孝敬天生大女主😎", "product": "养乐杯", "format": "图文", "date": "5/18", "exposure": 4206, "views": 261, "likes": 17, "comments": 5, "saves": 3, "followers": 0, "interaction": 25, "level": ""}, {"title": "奶茶店老板自留款：装啥都像水果茶🍏🧃", "product": "冰透杯", "format": "图文", "date": "5/6", "exposure": 3977, "views": 237, "likes": 17, "comments": 4, "saves": 2, "followers": 0, "interaction": 23, "level": ""}, {"title": "好喝到舔杯😋水果玻璃杯的含金量谁懂", "product": "冰透杯", "format": "图文", "date": "5/9", "exposure": 3941, "views": 230, "likes": 16, "comments": 5, "saves": 2, "followers": 1, "interaction": 24, "level": ""}, {"title": "无所谓，可爱会冲淡疲惫🍓", "product": "养乐杯", "format": "图文", "date": "5/26", "exposure": 2491, "views": 158, "likes": 15, "comments": 4, "saves": 3, "followers": 1, "interaction": 23, "level": ""}, {"title": "谁还不是个宝宝！！六一收到坠可爱的水杯！🎁", "product": "养乐杯", "format": "图文", "date": "5/29", "exposure": 2544, "views": 156, "likes": 14, "comments": 3, "saves": 3, "followers": 0, "interaction": 20, "level": ""}, {"title": "🩵‧ ༝ ‧女大自用随身杯 粉嫩嫩完全萌化", "product": "养乐杯", "format": "图文", "date": "5/25", "exposure": 2684, "views": 163, "likes": 13, "comments": 0, "saves": 1, "followers": 0, "interaction": 14, "level": ""}, {"title": "一颗猫猫头ฅ 两颗修狗头🍐𖤐*̩̩͙⸝⋆ ๋⭑", "product": "养乐杯", "format": "图文", "date": "5/18", "exposure": 3016, "views": 137, "likes": 13, "comments": 3, "saves": 3, "followers": 0, "interaction": 19, "level": ""}, {"title": "🎧✨随行水果玻璃杯       能放侧袋又能拎🎒", "product": "冰透杯", "format": "图文", "date": "5/7", "exposure": 3436, "views": 170, "likes": 13, "comments": 7, "saves": 3, "followers": 0, "interaction": 23, "level": ""}, {"title": "此水果玻璃瓶看似简单🐽实则功能夯爆😎", "product": "冰透杯", "format": "图文", "date": "5/5", "exposure": 3537, "views": 143, "likes": 13, "comments": 4, "saves": 1, "followers": 0, "interaction": 18, "level": ""}, {"title": "妈妈说这个杯子终于让我好好喝水了🍏💦", "product": "养乐杯", "format": "图文", "date": "5/23", "exposure": 2932, "views": 119, "likes": 12, "comments": 2, "saves": 5, "followers": 0, "interaction": 19, "level": ""}, {"title": "HAERS养乐杯✨只能带一只帮选🙊", "product": "养乐杯", "format": "图文", "date": "5/20", "exposure": 5029, "views": 261, "likes": 12, "comments": 6, "saves": 4, "followers": 0, "interaction": 22, "level": ""}, {"title": "不仅长得乖😋还能秒变提手杯随行🤏", "product": "冰透杯", "format": "图文", "date": "5/8", "exposure": 3673, "views": 217, "likes": 12, "comments": 9, "saves": 3, "followers": 1, "interaction": 25, "level": ""}, {"title": "不理解，但出门后也买了 一只🤡", "product": "养乐杯", "format": "图文", "date": "5/19", "exposure": 3736, "views": 164, "likes": 11, "comments": 2, "saves": 3, "followers": 0, "interaction": 16, "level": ""}, {"title": "𝜗𝜚⁺🧸HAERS娃娃机✨抓杯快乐to 自己❗️❕", "product": "养乐杯", "format": "图文", "date": "5/14", "exposure": 3852, "views": 242, "likes": 11, "comments": 4, "saves": 5, "followers": 0, "interaction": 20, "level": ""}, {"title": "别买普通杯了😣这个能吸能喝还能拎🍒", "product": "冰透杯", "format": "图文", "date": "5/2", "exposure": 3778, "views": 210, "likes": 11, "comments": 5, "saves": 1, "followers": 0, "interaction": 17, "level": ""}, {"title": "^›⩊‹^ ੭ 什么是小猫能量？🐱", "product": "养乐杯", "format": "图文", "date": "5/27", "exposure": 2220, "views": 115, "likes": 10, "comments": 2, "saves": 1, "followers": 0, "interaction": 13, "level": ""}, {"title": "🐰我这么萌你不炸了么❓❕", "product": "养乐杯", "format": "图文", "date": "5/14", "exposure": 3935, "views": 200, "likes": 10, "comments": 7, "saves": 2, "followers": 0, "interaction": 19, "level": ""}, {"title": "🐶：“人❕你不许喝咖啡 要多多哈水🥹💧”", "product": "养乐杯", "format": "图文", "date": "5/22", "exposure": 3614, "views": 249, "likes": 9, "comments": 5, "saves": 0, "followers": 0, "interaction": 14, "level": ""}, {"title": "🐱：“什么玩意跟我长得这么像❔”", "product": "养乐杯", "format": "图文", "date": "5/24", "exposure": 2389, "views": 115, "likes": 7, "comments": 1, "saves": 2, "followers": 0, "interaction": 10, "level": ""}, {"title": "怒夸🥰！不敢想收到这个杯子有多开心！", "product": "养乐杯", "format": "图文", "date": "5/30", "exposure": 1796, "views": 130, "likes": 5, "comments": 1, "saves": 0, "followers": 0, "interaction": 6, "level": ""}]}, "influencer": {"summary": {"posts": 181, "hits": 18, "exposure": 2229607, "views": 440504, "interaction": 87058, "cost": 38545.5, "cpm": 17.29, "cpe": 0.44, "hitRate": 9.9, "interactionRate": 3.9}, "creators": [{"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "Jade", "exposure": 137468, "views": 14449, "interaction": 6370, "followers": 221, "cost": 1100, "cpe": 0.17, "cpm": 8.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "小李飞鸽", "exposure": 83371, "views": 11434, "interaction": 5595, "followers": 60, "cost": 729.3, "cpe": 0.13, "cpm": 8.75}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "卡卡米", "exposure": 24878, "views": 19211, "interaction": 2950, "followers": 49, "cost": 408, "cpe": 0.14, "cpm": 16.4}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "Russell爱打呼", "exposure": 125825, "views": 15666, "interaction": 2952, "followers": 182, "cost": 1050, "cpe": 0.36, "cpm": 8.34}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "春日禾", "exposure": 86275, "views": 14383, "interaction": 2849, "followers": 39, "cost": 647.4, "cpe": 0.23, "cpm": 7.5}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "果梨雪奶冻", "exposure": 33815, "views": 7531, "interaction": 2332, "followers": 27, "cost": 564.4, "cpe": 0.24, "cpm": 16.69}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "薯角包", "exposure": 17053, "views": 9009, "interaction": 1962, "followers": 29, "cost": 460.2, "cpe": 0.23, "cpm": 26.99}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "白桃乌龙子🍡", "exposure": 17117, "views": 9926, "interaction": 2067, "followers": 77, "cost": 324, "cpe": 0.16, "cpm": 18.93}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "ipuppyoo", "exposure": 37203, "views": 4026, "interaction": 1788, "followers": 29, "cost": 374, "cpe": 0.21, "cpm": 10.05}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "椰椰起司🍦", "exposure": 13574, "views": 9583, "interaction": 1525, "followers": 19, "cost": 192.8, "cpe": 0.13, "cpm": 14.2}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "Bbluee", "exposure": 28469, "views": 9034, "interaction": 1531, "followers": 23, "cost": 591.8, "cpe": 0.39, "cpm": 20.79}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "小猫去数羊🐑", "exposure": 13847, "views": 9244, "interaction": 1430, "followers": 41, "cost": 702, "cpe": 0.49, "cpm": 50.7}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "eikooca", "exposure": 53071, "views": 7682, "interaction": 1414, "followers": 23, "cost": 350, "cpe": 0.25, "cpm": 6.59}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "ccckky", "exposure": 33870, "views": 7650, "interaction": 1436, "followers": 24, "cost": 657, "cpe": 0.46, "cpm": 19.4}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "波卡薄荷", "exposure": 27636, "views": 11463, "interaction": 1422, "followers": 19, "cost": 680, "cpe": 0.48, "cpm": 24.61}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "幸运小鱼板", "exposure": 9593, "views": 6491, "interaction": 1167, "followers": 31, "cost": 581, "cpe": 0.5, "cpm": 60.56}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "Sunny明星同款集", "exposure": 11377, "views": 8687, "interaction": 1099, "followers": 5, "cost": 264, "cpe": 0.24, "cpm": 23.2}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "懒懒鱼", "exposure": 245218, "views": 20597, "interaction": 1322, "followers": 34, "cost": 100, "cpe": 0.08, "cpm": 0.41}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "balababa", "exposure": 53944, "views": 3985, "interaction": 1132, "followers": 17, "cost": 726, "cpe": 0.64, "cpm": 13.46}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "黑米饭", "exposure": 7553, "views": 3460, "interaction": 643, "followers": 8, "cost": 625.9, "cpe": 0.97, "cpm": 82.87}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "松脆饼干", "exposure": 69048, "views": 9321, "interaction": 707, "followers": 38, "cost": 100, "cpe": 0.14, "cpm": 1.45}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "梨元七", "exposure": 8299, "views": 4810, "interaction": 662, "followers": 4, "cost": 304, "cpe": 0.46, "cpm": 36.63}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "亚克力花花", "exposure": 16872, "views": 3891, "interaction": 592, "followers": 20, "cost": 490, "cpe": 0.83, "cpm": 29.04}, {"owner": "赵雨鑫", "product": "冰透杯", "name": "fanyiii_", "exposure": 24053, "views": 3106, "interaction": 564, "followers": 6, "cost": 100, "cpe": 0.18, "cpm": 4.16}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "蓝莓甜甜冰", "exposure": 75044, "views": 11568, "interaction": 511, "followers": 14, "cost": 500, "cpe": 0.98, "cpm": 6.66}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "FashionDash", "exposure": 71300, "views": 8471, "interaction": 480, "followers": 4, "cost": 4500, "cpe": 9.38, "cpm": 63.11}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "小王今天吃什么", "exposure": 18749, "views": 3250, "interaction": 496, "followers": 22, "cost": 700, "cpe": 1.41, "cpm": 37.34}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "条条🍟", "exposure": 8396, "views": 2739, "interaction": 528, "followers": 5, "cost": 442, "cpe": 0.84, "cpm": 52.64}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "淡水蟹蟹子", "exposure": 6981, "views": 2609, "interaction": 561, "followers": 5, "cost": 664, "cpe": 1.18, "cpm": 95.12}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "窗前田埂", "exposure": 10534, "views": 1770, "interaction": 640, "followers": 5, "cost": 300, "cpe": 0.47, "cpm": 28.48}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "山佰万", "exposure": 7279, "views": 878, "interaction": 681, "followers": 1, "cost": 350, "cpe": 0.51, "cpm": 48.08}, {"owner": "单莉媛", "product": "摘星杯", "name": "吐司耶耶🥐", "exposure": 19953, "views": 1590, "interaction": 565, "followers": 9, "cost": 100, "cpe": 0.18, "cpm": 5.01}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "fanyiii_", "exposure": 2919, "views": 661, "interaction": 408, "followers": 0, "cost": 100, "cpe": 0.25, "cpm": 34.26}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "大菜狗不迷路", "exposure": 6760, "views": 715, "interaction": 588, "followers": 1, "cost": 100, "cpe": 0.17, "cpm": 14.79}, {"owner": "赵雨鑫", "product": "海洋泡泡", "name": "忙碌小鱼🐟", "exposure": 4399, "views": 1745, "interaction": 410, "followers": 12, "cost": 100, "cpe": 0.24, "cpm": 22.73}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "开66", "exposure": 10712, "views": 1375, "interaction": 639, "followers": 10, "cost": 100, "cpe": 0.16, "cpm": 9.34}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "小美Yummy", "exposure": 4675, "views": 740, "interaction": 531, "followers": 2, "cost": 100, "cpe": 0.19, "cpm": 21.39}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "小贝睡大觉", "exposure": 8677, "views": 1561, "interaction": 425, "followers": 11, "cost": 100, "cpe": 0.24, "cpm": 11.52}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "开个罐头🥫", "exposure": 9142, "views": 1779, "interaction": 412, "followers": 10, "cost": 680, "cpe": 1.65, "cpm": 74.38}, {"owner": "赵雨鑫", "product": "摘星杯", "name": "黑芝麻土拨鼠", "exposure": 7964, "views": 2090, "interaction": 381, "followers": 14, "cost": 100, "cpe": 0.26, "cpm": 12.56}, {"owner": "杨润叶", "product": "海洋泡泡", "name": "一抹泡泡记📔", "exposure": 3948, "views": 1145, "interaction": 505, "followers": 2, "cost": 100, "cpe": 0.2, "cpm": 25.33}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "困困魚沒犯困", "exposure": 11775, "views": 2636, "interaction": 481, "followers": 4, "cost": 741, "cpe": 1.54, "cpm": 62.93}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "失眠吐司", "exposure": 10778, "views": 1011, "interaction": 335, "followers": 11, "cost": 574.2, "cpe": 1.71, "cpm": 53.28}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "凉拌玛卡巴卡🥗", "exposure": 2887, "views": 752, "interaction": 443, "followers": 0, "cost": 100, "cpe": 0.23, "cpm": 34.64}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "努力哼哼", "exposure": 4594, "views": 610, "interaction": 477, "followers": 8, "cost": 240, "cpe": 0.5, "cpm": 52.24}, {"owner": "赵雨鑫", "product": "冰透杯", "name": "一颗椰肉", "exposure": 6057, "views": 942, "interaction": 432, "followers": 2, "cost": 50, "cpe": 0.12, "cpm": 8.25}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "开心小梨涡", "exposure": 27715, "views": 2768, "interaction": 463, "followers": 9, "cost": 810.5, "cpe": 1.75, "cpm": 29.24}, {"owner": "单莉媛", "product": "摘星杯", "name": "小西瓜瓜", "exposure": 9318, "views": 2242, "interaction": 328, "followers": 21, "cost": 50, "cpe": 0.15, "cpm": 5.37}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "瑜悦", "exposure": 5602, "views": 762, "interaction": 453, "followers": 1, "cost": 334.4, "cpe": 0.74, "cpm": 59.69}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "迷迷", "exposure": 5217, "views": 900, "interaction": 434, "followers": 0, "cost": 260, "cpe": 0.6, "cpm": 49.84}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "gale", "exposure": 11573, "views": 1243, "interaction": 429, "followers": 1, "cost": 360, "cpe": 0.84, "cpm": 31.11}, {"owner": "单莉媛", "product": "摘星杯", "name": "枣点睡吖", "exposure": 9148, "views": 2205, "interaction": 346, "followers": 1, "cost": 50, "cpe": 0.14, "cpm": 5.47}, {"owner": "单莉媛", "product": "冰透杯", "name": "小猫呆呆椰", "exposure": 7861, "views": 943, "interaction": 360, "followers": 1, "cost": 50, "cpe": 0.14, "cpm": 6.36}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "潘哒下班啦", "exposure": 5108, "views": 640, "interaction": 447, "followers": 2, "cost": 387.2, "cpe": 0.87, "cpm": 75.8}, {"owner": "单莉媛", "product": "摘星杯", "name": "小肥在干嘛", "exposure": 5393, "views": 1751, "interaction": 340, "followers": 53, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "李小咩", "exposure": 4219, "views": 605, "interaction": 422, "followers": 2, "cost": 280, "cpe": 0.66, "cpm": 66.37}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "梅子粉荔枝", "exposure": 3681, "views": 1609, "interaction": 312, "followers": 1, "cost": 50, "cpe": 0.16, "cpm": 13.58}, {"owner": "杨润叶", "product": "海洋泡泡", "name": "一只奶橙", "exposure": 3201, "views": 620, "interaction": 259, "followers": 1, "cost": 50, "cpe": 0.19, "cpm": 15.62}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "贰拾柒", "exposure": 17250, "views": 1795, "interaction": 365, "followers": 2, "cost": 50, "cpe": 0.14, "cpm": 2.9}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "吐司耶耶🥐", "exposure": 15180, "views": 1187, "interaction": 349, "followers": 3, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "Pink小泡泡", "exposure": 6151, "views": 1535, "interaction": 254, "followers": 8, "cost": 450, "cpe": 1.77, "cpm": 73.16}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "发财朱朱", "exposure": 12909, "views": 1302, "interaction": 310, "followers": 1, "cost": 50, "cpe": 0.16, "cpm": 3.87}, {"owner": "赵雨鑫", "product": "海洋泡泡", "name": "阿花花呀", "exposure": 4800, "views": 1009, "interaction": 319, "followers": 5, "cost": 50, "cpe": 0.16, "cpm": 10.42}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "桃子味梨子", "exposure": 0, "views": 0, "interaction": 338, "followers": 0, "cost": 50, "cpe": 0.15, "cpm": 0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "胖罐子破摔", "exposure": 16897, "views": 2225, "interaction": 354, "followers": 12, "cost": 50, "cpe": 0.14, "cpm": 2.96}, {"owner": "单莉媛", "product": "摘星杯", "name": "剥了皮的番茄🍅", "exposure": 4702, "views": 568, "interaction": 326, "followers": 2, "cost": 50, "cpe": 0.15, "cpm": 10.63}, {"owner": "赵雨鑫", "product": "冰透杯", "name": "叶子", "exposure": 9053, "views": 1256, "interaction": 330, "followers": 7, "cost": 50, "cpe": 0.15, "cpm": 5.52}, {"owner": "赵雨鑫", "product": "星愿杯", "name": "宅宅子呀", "exposure": 8639, "views": 1183, "interaction": 281, "followers": 3, "cost": 50, "cpe": 0.18, "cpm": 5.79}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "狂吃三碗饭", "exposure": 7266, "views": 1048, "interaction": 294, "followers": 0, "cost": 50, "cpe": 0.17, "cpm": 6.88}, {"owner": "赵雨鑫", "product": "喵喵瓶", "name": "小猫卷薄荷", "exposure": 3082, "views": 685, "interaction": 261, "followers": 6, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "爱吃汉堡宝", "exposure": 4748, "views": 1176, "interaction": 332, "followers": 5, "cost": 100, "cpe": 0.3, "cpm": 21.06}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "楽", "exposure": 21715, "views": 2115, "interaction": 372, "followers": 6, "cost": 350, "cpe": 0.94, "cpm": 16.12}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "limpidisland", "exposure": 7216, "views": 914, "interaction": 203, "followers": 3, "cost": 200, "cpe": 0.99, "cpm": 27.72}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "暴躁香芋", "exposure": 6344, "views": 1343, "interaction": 254, "followers": 25, "cost": 550, "cpe": 2.17, "cpm": 86.7}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "我是潘桃呀", "exposure": 14304, "views": 1255, "interaction": 406, "followers": 1, "cost": 300, "cpe": 0.74, "cpm": 20.97}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "番薯小羊", "exposure": 2874, "views": 629, "interaction": 280, "followers": 6, "cost": 50, "cpe": 0.18, "cpm": 17.4}, {"owner": "单莉媛", "product": "冰透杯", "name": "XinXinCafe", "exposure": 38322, "views": 5369, "interaction": 294, "followers": 7, "cost": 300, "cpe": 1.02, "cpm": 7.83}, {"owner": "赵雨鑫", "product": "星愿杯", "name": "一片小吐司🍞", "exposure": 1315, "views": 265, "interaction": 336, "followers": 1, "cost": 50, "cpe": 0.15, "cpm": 38.02}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "33得9", "exposure": 3085, "views": 404, "interaction": 330, "followers": 3, "cost": 50, "cpe": 0.15, "cpm": 16.21}, {"owner": "赵雨鑫", "product": "海洋泡泡", "name": "在宇宙遛个弯儿", "exposure": 5770, "views": 2069, "interaction": 277, "followers": 5, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "摘星杯", "name": "可可戏猫", "exposure": 3650, "views": 739, "interaction": 211, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "迎希", "exposure": 3728, "views": 1373, "interaction": 466, "followers": 70, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "黑边角色", "exposure": 18693, "views": 2434, "interaction": 195, "followers": 11, "cost": 200, "cpe": 1.03, "cpm": 10.7}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "温屿", "exposure": 4355, "views": 494, "interaction": 297, "followers": 0, "cost": 396, "cpe": 1.33, "cpm": 90.93}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "一枝晴子", "exposure": 2248, "views": 439, "interaction": 200, "followers": 0, "cost": 50, "cpe": 0.25, "cpm": 22.24}, {"owner": "杨润叶", "product": "冰透杯", "name": "暴躁阿柠", "exposure": 4078, "views": 478, "interaction": 283, "followers": 0, "cost": 50, "cpe": 0.18, "cpm": 12.26}, {"owner": "杨润叶", "product": "冰透杯", "name": "33得9", "exposure": 4078, "views": 478, "interaction": 283, "followers": 0, "cost": 50, "cpe": 0.18, "cpm": 12.26}, {"owner": "杨润叶", "product": "海洋泡泡", "name": "咔粒司桃Peii", "exposure": 5726, "views": 1570, "interaction": 239, "followers": 4, "cost": 50, "cpe": 0.21, "cpm": 8.73}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "暴躁阿柠", "exposure": 4078, "views": 478, "interaction": 283, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "焦糖枳", "exposure": 12188, "views": 1151, "interaction": 297, "followers": 0, "cost": 300, "cpe": 1.01, "cpm": 24.61}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "糯米团子🍡", "exposure": 0, "views": 0, "interaction": 298, "followers": 0, "cost": 50, "cpe": 0.17, "cpm": 0}, {"owner": "单莉媛", "product": "摘星杯", "name": "海绵饱饱喔", "exposure": 0, "views": 0, "interaction": 222, "followers": 0, "cost": 50, "cpe": 0.23, "cpm": 0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "一只椰椰", "exposure": 3453, "views": 510, "interaction": 289, "followers": 5, "cost": 50, "cpe": 0.17, "cpm": 14.48}, {"owner": "赵雨鑫", "product": "海洋泡泡", "name": "呆呆xin^", "exposure": 1248, "views": 379, "interaction": 183, "followers": 0, "cost": 50, "cpe": 0.27, "cpm": 40.06}, {"owner": "杨润叶", "product": "海洋泡泡", "name": "伤星薯饼大王", "exposure": 2952, "views": 481, "interaction": 205, "followers": 0, "cost": 50, "cpe": 0.24, "cpm": 16.94}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "睡个好觉yy", "exposure": 9544, "views": 850, "interaction": 279, "followers": 3, "cost": 300, "cpe": 1.08, "cpm": 31.43}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "旺旺雪饼", "exposure": 2474, "views": 425, "interaction": 257, "followers": 0, "cost": 50, "cpe": 0.19, "cpm": 20.21}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "板栗椰椰吖", "exposure": 2679, "views": 544, "interaction": 298, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "吼吼小嘻", "exposure": 3510, "views": 759, "interaction": 251, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "是阿Q呀", "exposure": 2968, "views": 1533, "interaction": 220, "followers": 2, "cost": 50, "cpe": 0.23, "cpm": 16.85}, {"owner": "杨润叶", "product": "海洋泡泡", "name": "H_小呆", "exposure": 0, "views": 0, "interaction": 261, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "杨润叶", "product": "冰透杯", "name": "果梨橙", "exposure": 28911, "views": 5127, "interaction": 282, "followers": 22, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "困困泡芙饼", "exposure": 6460, "views": 1151, "interaction": 193, "followers": 4, "cost": 700, "cpe": 3.63, "cpm": 108.36}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "小简明星同款", "exposure": 6655, "views": 638, "interaction": 158, "followers": 0, "cost": 360.8, "cpe": 2.28, "cpm": 54.21}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "淡淡田", "exposure": 2153, "views": 397, "interaction": 185, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "小麦芽MY", "exposure": 2154, "views": 327, "interaction": 289, "followers": 2, "cost": 300, "cpe": 1.04, "cpm": 139.28}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "不改名字", "exposure": 2503, "views": 461, "interaction": 211, "followers": 1, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "糯米团团", "exposure": 2091, "views": 466, "interaction": 250, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "星愿杯", "name": "不用情绪化", "exposure": 3186, "views": 519, "interaction": 185, "followers": 5, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "耶耶蛋卷", "exposure": 3351, "views": 348, "interaction": 268, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "百合Lilia", "exposure": 6680, "views": 837, "interaction": 167, "followers": 1, "cost": 130, "cpe": 0.78, "cpm": 19.46}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "好事在花生酱", "exposure": 8005, "views": 1045, "interaction": 145, "followers": 1, "cost": 346.5, "cpe": 2.39, "cpm": 43.29}, {"owner": "单莉媛", "product": "冰透杯", "name": "陈住气发大财", "exposure": 23765, "views": 3011, "interaction": 251, "followers": 6, "cost": 260, "cpe": 1.04, "cpm": 10.94}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "迎希", "exposure": 2272, "views": 823, "interaction": 234, "followers": 6, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "Mokiiii_", "exposure": 7127, "views": 892, "interaction": 256, "followers": 2, "cost": 300, "cpe": 1.17, "cpm": 42.09}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "apple kitty", "exposure": 2221, "views": 397, "interaction": 257, "followers": 1, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "ICream-Life", "exposure": 2974, "views": 552, "interaction": 186, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "莫拉咕叽叽哇哇冬巴擦", "exposure": 11995, "views": 1462, "interaction": 228, "followers": 1, "cost": 80, "cpe": 0.35, "cpm": 6.67}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "陈住气发大财", "exposure": 15155, "views": 2790, "interaction": 179, "followers": 1, "cost": 401.5, "cpe": 2.24, "cpm": 26.49}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "Yuli_ieo", "exposure": 8083, "views": 1158, "interaction": 177, "followers": 7, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "记录张水账", "exposure": 3623, "views": 1101, "interaction": 255, "followers": 2, "cost": 300, "cpe": 1.18, "cpm": 82.8}, {"owner": "单莉媛", "product": "喵喵瓶", "name": "摇摇七", "exposure": 2597, "views": 395, "interaction": 201, "followers": 4, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "星愿杯", "name": "冬夏续集", "exposure": 3283, "views": 592, "interaction": 196, "followers": 1, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "喵喵瓶", "name": "奶思兔米y", "exposure": 1990, "views": 355, "interaction": 139, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "十点就睡觉", "exposure": 1180, "views": 1643, "interaction": 136, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "一颗青缇树", "exposure": 5734, "views": 1070, "interaction": 174, "followers": 1, "cost": 300, "cpe": 1.72, "cpm": 52.32}, {"owner": "杨润叶", "product": "冰透杯", "name": "开心果de小茶瓶", "exposure": 6202, "views": 1033, "interaction": 188, "followers": 16, "cost": 400, "cpe": 2.13, "cpm": 64.5}, {"owner": "单莉媛", "product": "摘星杯", "name": "阿秋不打喷嚏", "exposure": 1773, "views": 354, "interaction": 149, "followers": 2, "cost": 50, "cpe": 0.34, "cpm": 28.2}, {"owner": "单莉媛", "product": "喵喵瓶", "name": "蜡笔小粥", "exposure": 3139, "views": 412, "interaction": 154, "followers": 3, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "撬不走的安安", "exposure": 2019, "views": 323, "interaction": 153, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "  vogue notes", "exposure": 5991, "views": 601, "interaction": 103, "followers": 0, "cost": 544, "cpe": 5.28, "cpm": 90.8}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "L1saen", "exposure": 0, "views": 0, "interaction": 114, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "明星同款Mark🐟", "exposure": 8736, "views": 804, "interaction": 102, "followers": 0, "cost": 440, "cpe": 4.31, "cpm": 50.37}, {"owner": "杨润叶", "product": "喵喵瓶", "name": "再吵记名字了", "exposure": 0, "views": 0, "interaction": 96, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "一口蛋黄酥.", "exposure": 1982, "views": 209, "interaction": 176, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "明星穿搭札记", "exposure": 2092, "views": 153, "interaction": 108, "followers": 1, "cost": 234, "cpe": 2.17, "cpm": 111.85}, {"owner": "杨润叶", "product": "猫狗养乐杯", "name": "Abaiiy", "exposure": 3604, "views": 359, "interaction": 171, "followers": 1, "cost": 300, "cpe": 1.75, "cpm": 83.24}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "想吃一口汉堡a", "exposure": 8175, "views": 956, "interaction": 138, "followers": 1, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "喵喵瓶", "name": "黄油兔兔", "exposure": 3181, "views": 675, "interaction": 154, "followers": 6, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "海洋泡泡", "name": "巧克力夹心曲奇🍪", "exposure": 2602, "views": 352, "interaction": 113, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "一只阿fa（开箱版）", "exposure": 2488, "views": 415, "interaction": 140, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "海洋泡泡", "name": "椰椰queen", "exposure": 3941, "views": 681, "interaction": 128, "followers": 3, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "爱吃香菜", "exposure": 1325, "views": 300, "interaction": 171, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "Mazmian-", "exposure": 6157, "views": 1101, "interaction": 137, "followers": 9, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "摘星杯", "name": "羞羞喵", "exposure": 3255, "views": 500, "interaction": 108, "followers": 1, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "粉荔枝", "exposure": 1944, "views": 398, "interaction": 136, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "虾饺不好惹【明星同款】", "exposure": 6932, "views": 932, "interaction": 80, "followers": 0, "cost": 457.6, "cpe": 5.72, "cpm": 66.01}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "陈住气", "exposure": 14079, "views": 1658, "interaction": 108, "followers": 1, "cost": 300, "cpe": 2.78, "cpm": 21.31}, {"owner": "赵雨鑫", "product": "海洋泡泡", "name": "一只鱼🐟", "exposure": 2893, "views": 683, "interaction": 125, "followers": 7, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "草莓奶油色夏天", "exposure": 3803, "views": 674, "interaction": 107, "followers": 3, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "懒大王喂", "exposure": 0, "views": 0, "interaction": 101, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "小猫生煎包", "exposure": 2026, "views": 502, "interaction": 114, "followers": 12, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "明星同款潮搭", "exposure": 3828, "views": 403, "interaction": 78, "followers": 0, "cost": 440, "cpe": 5.64, "cpm": 114.94}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "波橘子", "exposure": 1813, "views": 281, "interaction": 107, "followers": 1, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "喵喵瓶", "name": "小龄饱饱", "exposure": 0, "views": 0, "interaction": 97, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "杨润叶", "product": "喵喵瓶", "name": "椰冻不在线", "exposure": 3745, "views": 764, "interaction": 91, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "FashionNerd", "exposure": 1062, "views": 143, "interaction": 63, "followers": 0, "cost": 546, "cpe": 8.67, "cpm": 514.12}, {"owner": "单莉媛", "product": "冰透杯", "name": "不是没勇气而是闵玧其", "exposure": 8236, "views": 785, "interaction": 94, "followers": 3, "cost": 160, "cpe": 1.7, "cpm": 19.43}, {"owner": "单莉媛", "product": "喵喵瓶", "name": "喵脑袋0^0", "exposure": 0, "views": 0, "interaction": 70, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "小也来耶", "exposure": 0, "views": 0, "interaction": 86, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "七七的毛豆Y", "exposure": 5587, "views": 438, "interaction": 88, "followers": 1, "cost": 200, "cpe": 2.27, "cpm": 35.8}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "羞羞喵", "exposure": 2176, "views": 357, "interaction": 67, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "摘星杯", "name": "就叫芋圆", "exposure": 2758, "views": 896, "interaction": 78, "followers": 4, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "乌甘露", "exposure": 2185, "views": 290, "interaction": 87, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "格瑞猫猫", "exposure": 0, "views": 0, "interaction": 52, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "橙橙冰冰酱", "exposure": 1725, "views": 240, "interaction": 83, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "半只橙子🍊", "exposure": 3131, "views": 405, "interaction": 91, "followers": 2, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "明星同款Lucy", "exposure": 2329, "views": 218, "interaction": 50, "followers": 0, "cost": 132, "cpe": 2.64, "cpm": 56.68}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "花花不熬夜～", "exposure": 1717, "views": 315, "interaction": 87, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "啦啦酱", "exposure": 1634, "views": 373, "interaction": 58, "followers": 6, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "蟹黄大汉堡", "exposure": 1841, "views": 261, "interaction": 84, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "夹心狗", "exposure": 0, "views": 0, "interaction": 51, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "奶盐小兔", "exposure": 1351, "views": 280, "interaction": 79, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "赵雨鑫", "product": "猫狗养乐杯", "name": "Starvault明星同款", "exposure": 3086, "views": 284, "interaction": 44, "followers": 0, "cost": 272, "cpe": 6.18, "cpm": 88.14}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "my_Lailumi", "exposure": 0, "views": 0, "interaction": 54, "followers": 0, "cost": 50, "cpe": 0.93, "cpm": 0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "记得早点困", "exposure": 3139, "views": 229, "interaction": 41, "followers": 0, "cost": 100, "cpe": 2.44, "cpm": 31.86}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "阿西歪歪", "exposure": 0, "views": 0, "interaction": 50, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}, {"owner": "单莉媛", "product": "摘星杯", "name": "林林林霏", "exposure": 1924, "views": 266, "interaction": 42, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "猫狗养乐杯", "name": "小芜", "exposure": 1493, "views": 247, "interaction": 52, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0.0}, {"owner": "单莉媛", "product": "海洋泡泡", "name": "咬一口荔枝", "exposure": 0, "views": 0, "interaction": 34, "followers": 0, "cost": 0, "cpe": 0.0, "cpm": 0}]}}</script>
+<script>
+const DASH = JSON.parse(document.getElementById('dashboard-data').textContent);
+const state = {
+  account: { product: '全部', format: '全部', search: '', sort: 'interaction', dir: 'desc' },
+  influencer: { product: '全部', owner: '全部', search: '', sort: 'interaction', dir: 'desc' }
+};
+const fmt = value => {
+  value = Number(value) || 0;
+  if (Math.abs(value) >= 10000) return (value / 10000).toFixed(1) + '万';
+  return Math.round(value).toLocaleString('zh-CN');
+};
+const money = value => '¥' + (Number(value) || 0).toFixed(Number(value) > 99 ? 0 : 2).replace('.00','');
+const safe = value => String(value ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function sum(rows, key){ return rows.reduce((total, row) => total + (Number(row[key]) || 0), 0); }
+function group(rows, key, valueKey){
+  const map = new Map();
+  rows.forEach(row => {
+    const name = row[key] || '未标注';
+    map.set(name, (map.get(name) || 0) + (Number(row[valueKey]) || 0));
+  });
+  return [...map.entries()].map(([name, value]) => ({name, value})).sort((a,b)=>b.value-a.value).slice(0,8);
+}
+function chart(id, rows){
+  const box = document.getElementById(id);
+  const max = Math.max(1, ...rows.map(row => row.value));
+  box.innerHTML = rows.map(row => `<div class="chart-item"><span>${safe(row.name)}</span><span class="track"><i style="width:${Math.max(3,row.value/max*100)}%"></i></span><b>${fmt(row.value)}</b></div>`).join('');
+}
+function kpis(id, items){
+  document.getElementById(id).innerHTML = items.map(item => `<div class="kpi"><small>${safe(item.label)}</small><b>${safe(item.value)}</b><span>${safe(item.note || '')}</span></div>`).join('');
+}
+function filteredAccount(){
+  const s = state.account;
+  const q = s.search.trim().toLowerCase();
+  return DASH.account.notes.filter(row =>
+    (s.product === '全部' || row.product === s.product) &&
+    (s.format === '全部' || row.format === s.format) &&
+    (!q || [row.title,row.product,row.format,row.date].join(' ').toLowerCase().includes(q))
+  ).sort((a,b) => sortRows(a,b,s));
+}
+function filteredInfluencer(){
+  const s = state.influencer;
+  const q = s.search.trim().toLowerCase();
+  return DASH.influencer.creators.filter(row =>
+    (s.product === '全部' || row.product === s.product) &&
+    (s.owner === '全部' || row.owner === s.owner) &&
+    (!q || [row.name,row.product,row.owner].join(' ').toLowerCase().includes(q))
+  ).sort((a,b) => sortRows(a,b,s));
+}
+function sortRows(a,b,s){
+  const av = typeof a[s.sort] === 'string' ? a[s.sort] : Number(a[s.sort] || 0);
+  const bv = typeof b[s.sort] === 'string' ? b[s.sort] : Number(b[s.sort] || 0);
+  if (typeof av === 'string') return s.dir === 'desc' ? bv.localeCompare(av,'zh') : av.localeCompare(bv,'zh');
+  return s.dir === 'desc' ? bv - av : av - bv;
+}
+function renderAccount(){
+  const rows = filteredAccount();
+  kpis('accountDynamicKpis', [
+    {label:'笔记数', value:fmt(rows.length), note:'当前筛选结果'},
+    {label:'曝光', value:fmt(sum(rows,'exposure')), note:'筛选合计'},
+    {label:'互动', value:fmt(sum(rows,'interaction')), note:'筛选合计'},
+    {label:'涨粉', value:fmt(sum(rows,'followers')), note:'筛选合计'}
+  ]);
+  chart('accountProductChart', group(rows,'product','exposure'));
+  chart('accountFormatChart', group(rows,'format','interaction'));
+  document.getElementById('accountCount').textContent = `${rows.length} 条`;
+  renderTable('accountTable', rows, [
+    ['title','笔记标题','left'],['date','日期'],['product','产品'],['format','体裁'],
+    ['exposure','曝光','num'],['views','观看','num'],['likes','点赞','num'],['comments','评论','num'],['saves','收藏','num'],['followers','涨粉','num'],['interaction','互动','num']
+  ], 'account');
+}
+function renderInfluencer(){
+  const rows = filteredInfluencer();
+  const cost = sum(rows,'cost');
+  const interaction = sum(rows,'interaction');
+  const exposure = sum(rows,'exposure');
+  kpis('influencerDynamicKpis', [
+    {label:'投放笔记', value:fmt(rows.length), note:'当前筛选结果'},
+    {label:'曝光', value:fmt(exposure), note:'筛选合计'},
+    {label:'互动', value:fmt(interaction), note:'筛选合计'},
+    {label:'CPE', value:money(interaction ? cost / interaction : 0), note:'筛选估算'}
+  ]);
+  chart('influencerProductChart', group(rows,'product','interaction'));
+  chart('influencerOwnerChart', group(rows,'owner','interaction'));
+  document.getElementById('influencerCount').textContent = `${rows.length} 条`;
+  renderTable('influencerTable', rows, [
+    ['name','达人','left'],['owner','登记人'],['product','产品'],
+    ['exposure','曝光','num'],['views','阅读','num'],['interaction','互动','num'],['followers','关注','num'],['cost','成本','money'],['cpe','CPE','money'],['cpm','CPM','money']
+  ], 'influencer');
+}
+function renderTable(id, rows, columns, mode){
+  const s = state[mode];
+  const table = document.getElementById(id);
+  const heads = columns.map(([key,label]) => `<th class="sort ${s.sort===key?'active':''}" data-mode="${mode}" data-sort="${key}">${safe(label)}${s.sort===key ? (s.dir==='desc'?' ↓':' ↑') : ''}</th>`).join('');
+  table.innerHTML = `<thead><tr><th>排名</th>${heads}</tr></thead><tbody></tbody>`;
+  table.querySelector('tbody').innerHTML = rows.map((row,index) => {
+    const cells = columns.map(([key,label,type]) => {
+      let value = row[key];
+      if (type === 'num') value = fmt(value);
+      if (type === 'money') value = money(value);
+      const cls = type === 'left' ? 'title-cell' : '';
+      const content = key === 'product' || key === 'format' ? `<span class="badge">${safe(value)}</span>` : safe(value);
+      return `<td class="${cls}">${content}</td>`;
+    }).join('');
+    return `<tr><td><span class="rk ${index<3?'g':''}">${index+1}</span></td>${cells}</tr>`;
+  }).join('');
+  table.querySelectorAll('th.sort').forEach(head => {
+    head.addEventListener('click', () => {
+      const target = state[head.dataset.mode];
+      if (target.sort === head.dataset.sort) target.dir = target.dir === 'desc' ? 'asc' : 'desc';
+      else { target.sort = head.dataset.sort; target.dir = 'desc'; }
+      head.dataset.mode === 'account' ? renderAccount() : renderInfluencer();
+    });
+  });
+}
+function bindFilters(){
+  document.querySelectorAll('[data-filter-group]').forEach(button => {
+    button.addEventListener('click', () => {
+      const group = button.dataset.filterGroup;
+      button.parentElement.querySelectorAll('button').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      if (group === 'accountProduct') state.account.product = button.dataset.value;
+      if (group === 'accountFormat') state.account.format = button.dataset.value;
+      if (group === 'influencerProduct') state.influencer.product = button.dataset.value;
+      if (group === 'influencerOwner') state.influencer.owner = button.dataset.value;
+      group.startsWith('account') ? renderAccount() : renderInfluencer();
+    });
+  });
+  document.getElementById('accountSearch').addEventListener('input', e => { state.account.search = e.target.value; renderAccount(); });
+  document.getElementById('influencerSearch').addEventListener('input', e => { state.influencer.search = e.target.value; renderInfluencer(); });
+}
+document.querySelectorAll('.view-switch button').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.view-switch button').forEach(item => item.classList.remove('active'));
+    button.classList.add('active');
+    document.querySelectorAll('.section-block').forEach(section => { section.hidden = section.id !== button.dataset.view; });
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+bindFilters();
+renderAccount();
+renderInfluencer();
+</script>
+</body>
+</html>
